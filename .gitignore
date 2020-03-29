@@ -1,0 +1,38 @@
+# temporary OpenOffice files
+*.*#
+
+# auxiliary LaTeX files
+*.log
+*.aux
+*.bbl
+*.dvi
+*.synctex
+*.blg
+*.bak
+*.bcf
+*.toc
+*.run.xml
+*.pdf
+
+*.ps
+
+# auxiliary Beamer files
+*.nav
+*.out
+*.snm
+
+# auxiliary TexStudio files
+*.synctex.gz*
+
+# auxiliary Matlab files
+*.asv
+
+# auxiliary LyX files
+*.lyx~
+
+# my temporary files
+resultplot.tikz
+
+main.tex
+pub_epidermis-segmentation - Copy.tex
+spie2017_poster_test.tex

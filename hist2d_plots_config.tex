@@ -1,0 +1,37 @@
+%> Configure collagen peak
+\pgfmathsetmacro{\xoA}{0.3}
+\pgfmathsetmacro{\yoA}{0.5}
+%
+\pgfmathsetmacro{\sigmaXA}{0.05}
+\pgfmathsetmacro{\sigmaYA}{0.15}
+\pgfmathsetmacro{\thetaA}{10}
+%
+\pgfmathsetmacro{\aA}{cos(\thetaA)^2/(2*\sigmaXA^2) + sin(\thetaA)^2/(2*\sigmaYA^2)}
+\pgfmathsetmacro{\bA}{-sin(2*\thetaA)/(4*\sigmaXA^2) + sin(2*\thetaA)/(4*\sigmaYA^2)}
+\pgfmathsetmacro{\cA}{sin(\thetaA)^2/(2*\sigmaXA^2) + cos(\thetaA)^2/(2*\sigmaYA^2)}
+%
+\pgfmathsetmacro{\fcA}{1.0}
+
+%> Configure epidermis peak
+\pgfmathsetmacro{\xoE}{0.6}
+\pgfmathsetmacro{\yoE}{0.4}
+%
+\pgfmathsetmacro{\sigmaXE}{0.3}
+\pgfmathsetmacro{\sigmaYE}{0.2}
+\pgfmathsetmacro{\thetaE}{20}
+%
+\pgfmathsetmacro{\aE}{cos(\thetaE)^2/(2*\sigmaXE^2) + sin(\thetaE)^2/(2*\sigmaYE^2)}
+\pgfmathsetmacro{\bE}{-sin(2*\thetaE)/(4*\sigmaXE^2) + sin(2*\thetaE)/(4*\sigmaYE^2)}
+\pgfmathsetmacro{\cE}{sin(\thetaE)^2/(2*\sigmaXE^2) + cos(\thetaE)^2/(2*\sigmaYE^2)}
+%
+\pgfmathsetmacro{\fcE}{0.7}
+
+\newcommand{\nSamples}{1}
+\iftoggle{DETAILEDPLOT}{
+	% Debug ON
+	\renewcommand{\nSamples}{6}
+%	\renewcommand{\nSamples}{16}
+}{
+	% Debug OFF
+	\renewcommand{\nSamples}{2}
+}

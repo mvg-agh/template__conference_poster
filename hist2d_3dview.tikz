@@ -1,0 +1,33 @@
+%> Perspective view
+\begin{tikzpicture}
+\begin{axis}[
+view={-12}{65},
+xlabel = {H},
+ylabel = {E},
+zlabel = {$N_\mathrm{px}$},
+xtick style={draw=none}, % Hide tick marks
+ytick style={draw=none}, % Hide tick marks
+ztick style={draw=none}, % Hide tick marks
+%
+xmin=0,xmax=1,
+ymin=0,ymax=1,
+zmin=0,zmax=1,
+%
+xtick={0, 1},
+ytick={0, 1},
+ztick={-2, 2},
+zticklabel=\empty,
+%
+yticklabel style = {font=\scriptsize, xshift=0.5ex, yshift=0.7ex},
+xticklabel style = {font=\scriptsize, yshift=0.5ex},
+% Note: Consider rotation!
+xlabel style = {font=\small, yshift=1.5ex},
+ylabel style={font=\small, xshift=1ex, yshift=2ex},
+zlabel style = {font=\small, xshift=-1.8ex, yshift=-2ex},
+%
+]
+\addplot3[surf,shader=faceted interp,samples=\nSamples,domain=0:1] 
+{\fcA*(x-\aA)*y^2};
+\end{axis}
+%
+\end{tikzpicture}

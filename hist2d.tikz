@@ -1,0 +1,67 @@
+%> Histogram view
+\begin{tikzpicture}
+
+\begin{axis}[
+height=\imgheight,
+view={0}{90},
+%
+xlabel = {H},
+ylabel = {E},
+xtick style={draw=none}, % Hide tick marks
+ytick style={draw=none}, % Hide tick marks
+%
+xmin=0,xmax=1,
+ymin=0,ymax=1,
+%
+xtick={0, 1},
+ytick={0, 1},
+%
+yticklabel style = {font=\scriptsize,xshift=0.5ex},
+xticklabel style = {font=\scriptsize,yshift=0.3ex},
+ylabel style={font=\small,yshift=-1ex},
+xlabel style = {font=\small,yshift=1.5ex},
+]
+%
+\addplot3[surf,samples=\nSamples,domain=0:1] 
+{\fcA*(x-\aA)*y^2};
+%
+\draw[thick,red] \pgfextra{
+\pgfpathellipse{\pgfplotspointaxisxy{\xoA+0.02}{\yoA-0.05}}
+{\pgfplotspointaxisdirectionxy{0.10}{-0.03}}
+{\pgfplotspointaxisdirectionxy{0}{0.2}}
+};
+%
+\newcommand{\markerscale}{3}
+\newlength{\markerweight}
+\setlength{\markerweight}{2pt}
+%
+%
+% > Saddle point
+\newcommand{\xoS}{0.45}
+\newcommand{\yoS}{0.37}
+%
+\addplot [only marks,mark=x,thick, mark options={scale=\markerscale,line width=\markerweight}] coordinates { (\xoS,\yoS) };
+%
+\node (S) at (axis cs:\xoS,\yoS) [circle, scale=0] {};
+\node[above right = 0cm and 0cm of S, anchor=north] (Slabel) {\scriptsize{$S$}};
+%
+%
+% > Basophilic tissue structures peak
+%
+\addplot [only marks,mark=x,thick, mark options={scale=\markerscale,line width=\markerweight}, white] coordinates { (\xoA,\yoA) };
+%
+\node (C) at (axis cs:\xoA,\yoA) [circle, scale=0] {};
+\node[above right = 0cm and 0.5ex of C, anchor=north east] (Clabel) {\scriptsize{$C$}};
+%
+%
+% > Collagen peak
+%
+\addplot [only marks,mark=x,thick, mark options={scale=\markerscale,line width=\markerweight}, blue] coordinates { (\xoE,\yoE) };
+%\addplot [only marks,mark=x,thick, mark size=3em] coordinates { (0.5,0.3) };
+%
+\node (E) at (axis cs:\xoE,\yoE) [circle, scale=0] {};
+\node[above right = 0cm and 0.0ex of E, anchor=west] (Elabel) {\scriptsize{$O$}};
+%
+%
+\end{axis}
+\end{tikzpicture}

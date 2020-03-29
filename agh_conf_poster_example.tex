@@ -1,0 +1,547 @@
+% TODO (template)
+% - zrobić komendę \blocksection
+% - opisać w komentarzach co robi który parametr
+% - zrobić switch dla odstępu między kolumnami: proporcjonalny/absolutny
+% - zmodyfikować "copyright" - będę jedynym autorem
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX poster template
+% Created by Nathaniel Johnston
+% August 2009
+% http://www.nathanieljohnston.com/2009/08/latex-poster-template/
+%
+% Modified by Paweł Kłeczek
+% February 2017
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[final,20pt]{beamer}
+% 44 x 44 in
+\usepackage[size=custom,width=111.76,height=111.76,scale=1,debug]{beamerposter}
+% 40 x 44 in
+%\usepackage[size=custom,width=101.6,height=111.76,scale=1,debug]{beamerposter}
+\usepackage{graphicx}			% allows us to import images
+
+%-----------------------------------------------------------
+% Define the column width and poster size
+%-----------------------------------------------------------
+
+%\setlength{\paperwidth}{40in}
+%\setlength{\paperheight}{44in}
+
+
+\usepackage{calc}
+
+\usepackage{siunitx}
+\usepackage{paralist}
+\usepackage{enumitem}
+\usepackage{fp}
+\usepackage{mathtools}
+%\usepackage{amsfonts}
+%\usepackage{amsmath}
+\usepackage{caption}
+%\usepackage[flushleft]{threeparttable}
+%\usepackage{booktabs}
+%\usepackage{makecell}
+%\usepackage{footnote}
+%\usepackage{array}
+%\usepackage{tabularx}
+\usepackage{subcaption}
+%\usepackage{gensymb} % degree symbol
+
+\usepackage{filecontents}
+
+% Facilitate the conditional compilation
+\usepackage{etoolbox}
+
+
+\setbeamertemplate{caption}[numbered]
+
+\captionsetup{subrefformat=parens}
+
+
+\newlength{\sepwid}
+\newlength{\onecolwid}
+\newlength{\twocolwid}
+\newlength{\threecolwid}
+
+\newcommand{\interblockskip}{\vskip1.5ex}
+\newcommand{\interlineskip}{\vskip0.8ex}
+
+%\newlength{\twocolwidold}
+%
+\newcommand{\ncols}{3}
+
+% 40 x 44 in
+%\newcommand{\sepwidcoef}{0.03}
+
+% 44 x 44 in
+\newcommand{\sepwidcoef}{0.02}
+
+%\newcommand{\sepwidcoef}{0.1}
+\setlength{\sepwid}{\paperwidth*\real{\sepwidcoef}}
+\FPeval{\onecolscale}{(1 - (\ncols + 1)*\sepwidcoef) / \ncols}
+\setlength{\onecolwid}{\paperwidth*\real{\onecolscale}}
+%
+%\setlength{\twocolwidold}{0.464\paperwidth}
+%\setlength{\threecolwid}{0.708\paperwidth}
+\setlength{\twocolwid}{\onecolwid*\real{2}+\sepwid}
+\setlength{\threecolwid}{\onecolwid*\real{3}+\sepwid*\real{2}}
+%
+\setlength{\topmargin}{-0.5in}
+%
+\usetheme{confposter}
+\usepackage{exscale}
+
+\newcommand{\blocksection}[1]{{\bfseries #1}}
+
+\newlength{\groupwidth}
+\newlength{\picwidth}
+\newlength{\imgwidth}
+\newlength{\imgheight}
+
+% DEF : Math commands
+\DeclarePairedDelimiter\abs{\lvert}{\rvert} % Requires `mathtools` package.
+\newcommand{\argmin}{\operatornamewithlimits{arg \, min}}
+
+
+%-----------------------------------------------------------
+% Configure TikZ/PGFplots
+%-----------------------------------------------------------
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{tikzscale}
+
+\usetikzlibrary{calc,shapes,shadows,arrows,positioning,graphs}
+\tikzset{>=latex}
+
+\pgfplotsset{compat=1.8}
+\pgfplotsset{minor grid style={dashed,black!15!white}}	
+\pgfplotsset{major grid style={black!35!white}}	
+
+\usepgfplotslibrary{groupplots}
+
+\input{results_plot}
+
+%-----------------------------------------------------------
+% Define colours (see beamerthemeconfposter.sty to change these colour definitions)
+%-----------------------------------------------------------
+
+\setbeamercolor{block title}{fg=ngreen,bg=white}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamercolor{block alerted title}{fg=white,bg=dblue!70}
+\setbeamercolor{block alerted body}{fg=black,bg=dblue!10}
+
+% -- Use a solid line as the separator between block title and block body.
+
+%\colorlet{separation rule}{structure!40}
+
+%\setbeamertemplate{blocks}[rectangles][shadow=true]
+%\makeatletter
+%\pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
+%	color(0pt)=(separation rule); color(2pt)=(separation rule); color(4pt)=(separation rule)}
+%\makeatother
+
+%-----------------------------------------------------------
+% Results
+%-----------------------------------------------------------
+
+\newcommand{\numel}[1]{{\mid#1\mid}}
+
+\FPeval{\nwsisubc}{62}
+\FPeval{\nwsiscmuj}{16}
+\FPeval{\nwsisumch}{10}
+\FPeval{\nwsis}{clip(\nwsisubc + \nwsiscmuj + \nwsisumch)}
+
+\input{stats_conf}
+
+\FPeval{\asenpropperc}{\setallpropAsenmean * 100}
+\FPeval{\aspepropperc}{\setallpropAspemean * 100}
+\FPeval{\aprepropperc}{\setallpropApremean * 100}
+
+\newcommand{\dispstat}[1]{\num[round-mode=places,round-precision=2]{#1}}
+\newcommand{\dispperc}[1]{\SI[round-mode=places,round-precision=0]{#1}{\percent}}
+
+%-----------------------------------------------------------
+% Name and authors of poster/paper/research
+%-----------------------------------------------------------
+
+\title{Automated epidermis segmentation in histopathological images\linebreak of human skin stained with hematoxylin and eosin}
+
+\author[shortname]{Pawe\l{} K\l{}eczek \inst{1} \and Grzegorz Dyduch \inst{2} \and Joanna Jaworek-Korjakowska \inst{1} \and Ryszard Tadeusiewicz \inst{1}}
+
+\institute[shortinst]{%
+\inst{1} AGH University of Science and Technology, Department of Automatics and Biomedical Engineering, Krakow, Poland %
+\and %
+\inst{2} Jagiellonian University Medical College, Department of Pathomorphology, Krakow, Poland%
+}
+
+%-----------------------------------------------------------
+% Start the poster itself
+%-----------------------------------------------------------
+
+\titlegraphic{\vspace{8cm}}% to push the other text to the top
+
+\newtoggle{GFXDEBUG}
+\togglefalse{GFXDEBUG}
+%\toggletrue{GFXDEBUG}
+
+\newtoggle{DETAILEDPLOT}
+\toggletrue{DETAILEDPLOT}
+%\togglefalse{DETAILEDPLOT}
+
+% \draftgraphics - a switch do disable/enable draft frames instead of the actual graphics (to speed-up the rendering process)
+\iftoggle{GFXDEBUG}{
+	% Debug ON
+	\newcommand{\draftgraphics}{draft}
+}{
+	% Debug OFF
+	\newcommand{\draftgraphics}{}
+}
+
+% START
+
+\begin{document}
+\begin{frame}[t]
+	\newlength{\logosvoffset}
+	\setlength{\logosvoffset}{-9.5cm}
+	%	
+	\newlength{\logoshoffset}
+	\setlength{\logoshoffset}{9cm}
+	
+	\tikz [remember picture,overlay]
+	\node at
+	([xshift=\logoshoffset, yshift=\logosvoffset]current page.north west) 
+	%	([xshift=7cm, yshift=-9cm]current page.north west) 
+	{\includegraphics[width=8cm]{images/logos/spie_logo.png}};
+	
+	\tikz [remember picture,overlay]
+	\node at
+	([xshift=-\logoshoffset, yshift=\logosvoffset]current page.north east) 
+	%	([xshift=-7cm, yshift=-9cm]current page.north east) 
+	{\includegraphics[width=8cm]{images/logos/agh_logo.jpg}};
+	
+	\vspace*{-3cm}
+	
+	\begin{columns}[t]
+	\begin{column}{\sepwid}\end{column}
+	%
+	\begin{column}{\onecolwid}
+		\begin{alertblock}{Objectives}
+		\textbf{The aim if our project was to provide students and employees of AGH-UST with a nice-looking conference poster template.}
+		\end{alertblock}  
+		%  	
+		\interblockskip
+		%
+		\begin{block}{Introduction}
+		 	Just a few words of introduction. Not too many, 'cause TLDR...
+		%
+		\vspace*{-0.4cm}
+		\begin{columns}
+			\setlength{\imgheight}{10cm}
+			
+			\begin{column}[T]{.45\textwidth}
+				\centering
+				\begin{figure}[h]
+					\centering
+					\includegraphics[\draftgraphics,height=\imgheight]{images/lenna.png}
+					%
+					\caption{\label{fig:skin_slide} Lena S\"oderberg~\cite{Lenna}.}
+				\end{figure}
+			\end{column}
+			\begin{column}[T]{.45\textwidth}
+				\centering
+				\begin{figure}[h]
+					\centering
+					\includegraphics[\draftgraphics,height=\imgheight]{images/dummy.png}
+					%
+					\caption{\label{fig:pipeline_whole} The proposed epidermis segmentation pipeline.}
+				\end{figure}			
+			\end{column}
+		\end{columns}
+			\end{block}
+		%
+		\interblockskip
+		%
+		\begin{block}{Method}
+
+			Yet another block, but this time it's often desirable to split it into smaller subsections...
+			
+			\interlineskip
+			
+			% Add a label for easier navigation.
+			% SEC : Section #1
+			\blocksection{Section One}
+			
+			And here is an equation:
+			\begin{equation}
+				\label{eq:luma}
+				\mathrm{Y} = 0.299 \, I_\mathrm{R} + 0.587 \, I_\mathrm{G} + 0.114 \, I_\mathrm{B}
+				,
+			\end{equation}
+			but I have no idea if it makes sense to anyone.
+			
+			\interlineskip
+			
+			% SEC : Section #1
+			\blocksection{Section Two}
+			
+			Just some more text... but wait! There is also a nice figure with subfigures~(Fig.~\ref{fig:subfigures}).
+
+			\interlineskip
+
+			\begin{figure}[h]
+				\centering	
+				\setlength{\imgheight}{8cm}
+				
+				\setlength{\fboxsep}{0pt}%
+				\setlength{\fboxrule}{1pt}%	
+				
+				\begin{subfigure}[c]{0.45\textwidth}
+					\centering
+					\fbox{\includegraphics[\draftgraphics,width=\linewidth]{images/dummy.png}}
+					\caption*{\label{fig:subfig_x} X}
+				\end{subfigure}
+				\begin{subfigure}[c]{0.45\textwidth}
+					\centering
+					\fbox{\includegraphics[\draftgraphics,width=\linewidth]{images/dummy.png}}
+					\caption*{\label{fig:subfig_y} Y}
+				\end{subfigure}
+				
+				% TODO: add subrefs
+				\caption{\label{fig:subfigures} Subfigures.}
+			\end{figure}	
+		
+			The Figure~\ref{fig:subfig_x} is IMHO the best one.
+			
+			\begin{figure}[h]
+				\centering	
+				\setlength{\imgheight}{5cm}
+				\setlength{\groupwidth}{.225\linewidth}
+				
+				\setlength{\fboxsep}{0pt}%
+				\setlength{\fboxrule}{1pt}%	
+				
+				\begin{subfigure}[c]{\groupwidth}
+					\centering
+					\fbox{\includegraphics[\draftgraphics,width=\linewidth]{images/dummy.png}}
+					\caption*{\label{fig:groupwidth_1} $A_1$}
+				\end{subfigure}
+				\begin{subfigure}[c]{\groupwidth}
+					\centering
+					\fbox{\includegraphics[\draftgraphics,width=\linewidth]{images/dummy.png}}
+					\caption*{\label{fig:groupwidth_2} $A_2$}
+				\end{subfigure}
+				\begin{subfigure}[c]{\groupwidth}
+					\centering
+					\fbox{\includegraphics[\draftgraphics,width=\linewidth]{images/dummy.png}}
+					\caption*{\label{fig:groupwidth_3} $A_3$}
+				\end{subfigure}
+				
+				\caption{\label{fig:groupwidth} Groupwidth property.}
+			\end{figure}				
+									
+		\end{block}		
+	\end{column}
+	%
+	%
+	\begin{column}{\sepwid}\end{column}
+	%
+	%
+	\begin{column}{\twocolwid}
+		\begin{columns}[t,totalwidth=\twocolwid]
+			\begin{column}{\onecolwid}
+				\begin{exampleblock}{}
+					% SEC : Stain concentrations analysis
+					\blocksection{Section Three}
+					
+					See? I don't need this fancy headers on top on each block. I can use an \textit{Example block} and yes -- just continue the previous block! Oh... and take a look on Figure~\ref{fig:plots} where you have examples of good-looking plots.
+					
+					\interlineskip
+
+					\begin{figure}[h]
+						\centering	
+						\setlength{\imgheight}{7cm}
+						\setlength{\groupwidth}{.45\linewidth}
+						
+						\input{hist2d_plots_config}
+						
+						\begin{subfigure}[c]{\groupwidth}
+							\centering
+							\iftoggle{GFXDEBUG}{
+								\fbox{\includegraphics[\draftgraphics,height=\imgheight,width=\groupwidth]{images/dummy.png}}
+							}{
+								\input{hist2d.tikz}
+							}							
+							
+							\caption{\label{fig:hist2d} H+E histogram}
+						\end{subfigure}
+						%
+						\begin{subfigure}[c]{\groupwidth}
+							\centering
+							\iftoggle{GFXDEBUG}{
+								\fbox{\includegraphics[\draftgraphics,height=\imgheight,width=\groupwidth]{images/dummy.png}}
+							}{
+								\input{hist2d_3dview.tikz}			
+							}								
+							
+							\caption{\label{fig:hist2d_3dview} H+E histogram (3D view)}
+						\end{subfigure}
+						
+						\caption{\label{fig:plots} Fine collagen segmentation procedure:
+						%
+						\protect\subref{fig:hist2d} a 2D histogram, and
+						%
+						\protect\subref{fig:collagen_2dhist_3dview} a perspective view of \protect\subref{fig:hist2d}.}
+					\end{figure}
+					%
+					\interlineskip
+					%
+					All right. Enough is enough.		
+				\end{exampleblock}
+			\end{column}
+			%
+			\begin{column}{\onecolwid}
+
+				\begin{block}{Results}
+					As always, our results are ideal. Our technique has been evaluated on a set of $\infty$ images from \num{1000} different sources. It achieved mean sensitivity of~\dispperc{\asenpropperc}, specificity of~\dispperc{\aspepropperc}, and precision of \dispperc{\aprepropperc}.
+				\end{block}				
+			
+				\interblockskip				
+				
+				\begin{block}{Conclusions}
+					That is so obvious\textellipsis Our method outperforms all the existing techniques and should be published in Science or Nature.
+					
+					\interlineskip
+					
+					Bu wait, we plan to make a follow-up study to improve the performance of our method even further. Stay tuned!
+				\end{block}
+				%
+				\interblockskip
+				%
+				\begin{block}{References}
+					\footnotesize{\begin{thebibliography}{99}
+						\bibitem{Lenna} Lenna.
+						%
+						\bibitem{ABCD} ABCD.
+						%
+						\bibitem{XYZ} XYZ.
+					\end{thebibliography}}
+				\end{block}	
+			
+				\interblockskip
+			
+				\colorlet{qrblockcolor}{gray!80}
+		        \setbeamercolor{block alerted title}{fg=white,bg=qrblockcolor}
+	        	\begin{alertblock}{See detailed results}
+	        		% BLK : QR code
+					\begin{center}
+						% TODO: może zmienić to na jakiś inny QR?
+						\includegraphics[height=5cm]{images/qrcode.png}
+						
+						\vspace{-0.05ex}
+						{\small \ttfamily http://www.cs.cmu.edu/~chuck/lennapg/lenna.shtml}
+					\end{center}
+				\end{alertblock}
+			
+			\end{column}
+		\end{columns}
+%		%
+		\interblockskip
+		%
+		% BLK : Results summary
+		\begin{alertblock}{Results summary}
+			\interlineskip
+
+			\begin{columns}
+				\begin{column}[T]{.36\textwidth}
+					
+					% SEC: Dataset
+					\blocksection{Dataset}
+					
+					% TODO: czy to potrzebne?
+					\justify%
+					{%
+					%
+					Blah.%
+					}
+					
+					\begin{figure}[h]
+						\centering	
+						\setlength{\imgheight}{8cm}
+						
+						\setlength{\fboxsep}{0pt}%
+						\setlength{\fboxrule}{1pt}%	
+						
+						\begin{subfigure}[c]{0.38\textwidth}
+							\centering
+							\fbox{\includegraphics[\draftgraphics,height=\imgheight]{images/dummy.png}}
+							\caption*{\label{fig:datasets_1} X}
+						\end{subfigure}
+						\begin{subfigure}[c]{0.38\textwidth}
+							\centering
+							\fbox{\includegraphics[\draftgraphics,height=\imgheight]{images/dummy.png}}
+							\caption*{\label{fig:datasets_2} Y}
+						\end{subfigure}
+						
+						\caption{\label{fig:datasets}  Examples of images used in our study.}
+					\end{figure}
+				\end{column}
+				%
+				\begin{column}[T]{.6\textwidth}
+					
+					% SEC: Example segmentation results
+					\textbf{Example segmentation results}
+					
+					\begin{figure}[h]
+						\centering	
+						\setlength{\imgheight}{11cm}
+						
+						\setlength{\fboxsep}{0pt}%
+						\setlength{\fboxrule}{1pt}%	
+						
+						\begin{subfigure}[c]{0.36\textwidth}
+							\centering
+							\fbox{\includegraphics[\draftgraphics,height=\imgheight]{images/dummy.png}}
+							\caption*{\label{fig:segm_A} A}
+						\end{subfigure}
+						\begin{subfigure}[c]{0.36\textwidth}
+							\centering
+							\fbox{\includegraphics[\draftgraphics,height=\imgheight]{images/dummy.png}}
+							\caption{\label{fig:segm_B} B}
+						\end{subfigure}
+						
+						\caption{\label{fig:segmentation_results}  Segmentations obtained using the proposed method. Note the perfect result in \protect\subref{fig:segm_A}.}
+					\end{figure}					
+				\end{column}
+			\end{columns}
+			%
+			\interblockskip
+			%
+%			\hspace*{.04\textwidth}
+			\begin{columns}
+				\begin{column}{.98\textwidth}
+					% SEC: Performance comparison
+					\blocksection{Performance comparison}
+		
+					\begin{center}
+						\begin{figure}[h]
+							\setlength{\imgheight}{8cm}
+							\newlength{\resultsplotwidthbars}					
+		%					\input{results_plot}
+							\includegraphics[height=\imgheight,width=\textwidth]{resultplot.tikz}
+							
+							\caption{\label{fig:result_plot}  Performance comparison of state-of-the-art methods for epidermis segmentation using standard area-based metrics: sensitivity ($\mathcal{A}_{\text{SEN}}$), specificity ($\mathcal{A}_{\text{SPE}}$), and precision~($\mathcal{A}_{\text{PRE}}$), as well as the number of images for which a given method failed to segment even a single pixel (\# failed).}
+						\end{figure}
+					\end{center}
+				
+				\end{column}
+			\end{columns}		
+		\end{alertblock}
+	\end{column}
+	%
+	%
+	\begin{column}{\sepwid}\end{column}
+	\end{columns}
+\end{frame}
+\end{document}
